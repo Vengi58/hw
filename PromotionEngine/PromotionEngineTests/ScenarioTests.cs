@@ -12,8 +12,6 @@ namespace PromotionEngineTests
         public void Setup()
         {
             cart = new Cart();
-            var prom = TestData.CandDfor30.ToCombinedItemFixedPricePromotion();
-            var promn = TestData.ThreeAfor130.ToNitemForFixedPricePromotion();
         }
 
         [Test]

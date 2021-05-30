@@ -9,12 +9,10 @@ namespace PromotionEngineTests
         [Test]
         public void CombinedItemFixedPricePromotionParse()
         {
-            var promotionText = "C & D for 30";
-
-            var parsedPromotion = promotionText.ToCombinedItemFixedPricePromotion();
+            var parsedPromotion = TestData.CandDfor30.ToCombinedItemFixedPricePromotion();
 
             Assert.NotNull(parsedPromotion);
-            Assert.AreEqual(promotionText, parsedPromotion.Name);
+            Assert.AreEqual(TestData.CandDfor30, parsedPromotion.Name);
             Assert.AreEqual(30, parsedPromotion.FixedPrice);
             Assert.AreEqual(new List<string> { "C", "D" }, parsedPromotion.SKUs);
         }
@@ -22,12 +20,10 @@ namespace PromotionEngineTests
         [Test]
         public void NitemForFixedPricePromotionParse()
         {
-            var promotionText = "3 of A's for 130";
-
-            var parsedPromotion = promotionText.ToNitemForFixedPricePromotion();
+            var parsedPromotion = TestData.ThreeAfor130.ToNitemForFixedPricePromotion();
 
             Assert.NotNull(parsedPromotion);
-            Assert.AreEqual(promotionText, parsedPromotion.Name);
+            Assert.AreEqual(TestData.ThreeAfor130, parsedPromotion.Name);
             Assert.AreEqual(130, parsedPromotion.FixedPrice);
             Assert.AreEqual(3, parsedPromotion.NumberOfItems);
             Assert.AreEqual("A", parsedPromotion.SKU);
