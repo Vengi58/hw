@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PromotionEngineTests
 {
-    public class PromotionExtensionTests
+    public class PromotionRuleExtensionTests
     {
         [Test]
         public void CombinedItemFixedPricePromotionParse()
