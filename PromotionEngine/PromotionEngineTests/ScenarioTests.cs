@@ -1,37 +1,28 @@
 using NUnit.Framework;
 using PromotionEngine.Items;
 using PromotionEngine.PromotionRules;
-using System.Collections.Generic;
 
 namespace PromotionEngineTests
 {
     public class Tests
     {
-        readonly SKUitem a = new() { ID = "A", UnitPrice = 50 };
-        readonly SKUitem b = new() { ID = "B", UnitPrice = 30 };
-        readonly SKUitem c = new() { ID = "C", UnitPrice = 20 };
-        readonly SKUitem d = new() { ID = "D", UnitPrice = 15 };
-        static readonly NitemForFixedPricePromotion pr1 = new("A", 3, 130);
-        static readonly NitemForFixedPricePromotion pr2 = new("B", 2, 45);
-        static readonly CombinedItemFixedPricePromotion pr3 = new(new List<string> { "C", "D" }, 30);
-        static readonly List<PromotionRule> promotions = new() { pr1, pr2, pr3 };
         Cart cart;
 
         [SetUp]
         public void Setup()
         {
             cart = new Cart();
-            var prom = "C & D for 30".ToCombinedItemFixedPricePromotion();
-            var promn = "3 of A's for 130".ToNitemForFixedPricePromotion();
+            var prom = TestData.CandDfor30.ToCombinedItemFixedPricePromotion();
+            var promn = TestData.ThreeAfor130.ToNitemForFixedPricePromotion();
         }
 
         [Test]
         public void ScenarioA()
         {
-            cart.AddItem(a);
-            cart.AddItem(b);
-            cart.AddItem(c);
-            foreach (var pr in promotions)
+            cart.AddItem(TestData.a);
+            cart.AddItem(TestData.b);
+            cart.AddItem(TestData.c);
+            foreach (var pr in TestData.promotions)
             {
                 if (pr.IsApplicable(cart))
                 {
@@ -43,10 +34,10 @@ namespace PromotionEngineTests
         [Test]
         public void ScenarioB()
         {
-            cart.AddItems(a, 5);
-            cart.AddItems(b, 5);
-            cart.AddItem(c);
-            foreach (var pr in promotions)
+            cart.AddItems(TestData.a, 5);
+            cart.AddItems(TestData.b, 5);
+            cart.AddItem(TestData.c);
+            foreach (var pr in TestData.promotions)
             {
                 if (pr.IsApplicable(cart))
                 {
@@ -58,11 +49,11 @@ namespace PromotionEngineTests
         [Test]
         public void ScenarioC()
         {
-            cart.AddItems(a, 3);
-            cart.AddItems(b, 5);
-            cart.AddItem(c);
-            cart.AddItem(d);
-            foreach (var pr in promotions)
+            cart.AddItems(TestData.a, 3);
+            cart.AddItems(TestData.b, 5);
+            cart.AddItem(TestData.c);
+            cart.AddItem(TestData.d);
+            foreach (var pr in TestData.promotions)
             {
                 if (pr.IsApplicable(cart))
                 {
