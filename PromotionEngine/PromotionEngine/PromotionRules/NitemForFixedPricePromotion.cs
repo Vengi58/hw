@@ -1,4 +1,5 @@
 ﻿using PromotionEngine.Items;
+using System;
 using System.Linq;
 
 namespace PromotionEngine.PromotionRules
@@ -11,6 +12,10 @@ namespace PromotionEngine.PromotionRules
 
         public NitemForFixedPricePromotion(string sku, int numberOfItems, int fixedPrice)
         {
+            if (string.IsNullOrWhiteSpace(sku)) throw new ArgumentException("Invalid or missing SKU!");
+            if (numberOfItems <= 0) throw new ArgumentException("Invalid number of items in promotion rule! It must be grater than zero!");
+            if (fixedPrice <= 0) throw new ArgumentException("Invalid number for fixed price in promotion rule! It must be grater than zero!");
+            
             SKU = sku;
             NumberOfItems = numberOfItems;
             FixedPrice = fixedPrice;
@@ -35,7 +40,8 @@ namespace PromotionEngine.PromotionRules
 
         public override bool IsApplicable(Cart cart)
         {
-            return cart.Items
+            return !IsEmptyCart(cart) &&
+                cart.Items
                 .Where(i => !i.PromotionApplied && SKU.Equals(i.Item.ID))
                 .Count() >= NumberOfItems;
         }

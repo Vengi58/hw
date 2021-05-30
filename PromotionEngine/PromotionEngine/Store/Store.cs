@@ -22,25 +22,25 @@ namespace PromotionEngine.Store
 
         public Store AddSKUitem(SKUitem item)
         {
-            Items.Add(item);
+            if( item != null ) Items.Add(item);
             return this;
         }
 
         public Store AddPromotions(List<PromotionRule> promotions)
         {
-            Promotions.AddRange(promotions);
+            if ( promotions != null && promotions.Count > 0 )Promotions.AddRange(promotions);
             return this;
         }
 
         public Store AddPromotion(PromotionRule promotion)
         {
-            Promotions.Add(promotion);
+            if ( promotion != null ) Promotions.Add(promotion);
             return this;
         }
 
         public Store AddItemToCart(string itemSKU)
         {
-            Cart.AddItem(Items.First(i => itemSKU.Equals(i.ID)));
+            if ( !string.IsNullOrWhiteSpace(itemSKU) ) Cart.AddItem(Items.First(i => itemSKU.Equals(i.ID)));
             return this;
         }
 
@@ -52,13 +52,7 @@ namespace PromotionEngine.Store
 
         public Store Checkout()
         {
-            foreach (var pr in Promotions)
-            {
-                if (pr.IsApplicable(Cart))
-                {
-                    pr.Execute(Cart);
-                }
-            }
+            Promotions.ForEach(p => { if (p.IsApplicable(Cart)) p.Execute(Cart); });
             return this;
         }
     }

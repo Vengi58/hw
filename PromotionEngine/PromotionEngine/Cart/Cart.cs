@@ -32,7 +32,7 @@ namespace PromotionEngine.Items
 
         public void RemoveItem(int skuItemId)
         {
-            Items.FirstOrDefault(t => skuItemId.Equals(t.Item.ID));
+           Items.Remove(Items.FirstOrDefault(t => skuItemId.Equals(t.Item.ID)));
         }
 
 
