@@ -21,6 +21,8 @@ namespace PromotionEngineTests
         public void Setup()
         {
             cart = new Cart();
+            var prom = "C & D for 30".ToCombinedItemFixedPricePromotion();
+            var promn = "3 of A's for 130".ToNitemForFixedPricePromotion();
         }
 
         [Test]
