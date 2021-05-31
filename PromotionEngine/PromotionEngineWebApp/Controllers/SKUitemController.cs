@@ -75,7 +75,7 @@ namespace PromotionEngineWebApp.Controllers
         }
 
         // PUT api/<SKUitemController>/5
-        [HttpPut("{skuID}")]
+        [HttpPut("{skuID}/{unitPrice}")]
         public ActionResult<SKUitemDTO> Put(string skuID, float unitPrice)
         {
             try
