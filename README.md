@@ -10,14 +10,16 @@ The promotion engine should be modular to allow for more promotion types to be a
 
 ## Test Setup
 
-Unit price for SKU IDs A	50\
+Unit price for SKU IDs:\
+A	50\
 B	30\
 C	20\
 D	15
 
 Active Promotions:\
 3 of A's for 130\
-2 of B's for 45 C & D for 30
+2 of B's for 45\
+C & D for 30
 
 Scenario A\
 1	* A	50\
@@ -94,9 +96,28 @@ It also generates an Open API 3.1 specification and Swagger UI for easier testin
 Data is mapped to DTO type from the types defined in the `PromotionEngine` project, wher applicable.
 These DTO objects are exposed in the OpenApi schema.
 
+## Demo
+
+The `PromotionEngineWebApp` was added to a Docker Container and pushed to a public AWS ECR and made available on the following URL for testing:
+http://ec2-34-203-29-34.compute-1.amazonaws.com:1234/swagger
+
+## Usage
+
+1. Add SKUitems (if needed)
+2. Add Promotions, using the syntax of "3 of A's for 130" or C & D for 30 (if needed)
+3. Add SKUitems to the cart
+4. Get the cart
+5. Get total price (before applying the promotions)
+6. Checkout (applies the promotions)
+7. Get total price (before applying the promotions)
+
+Further CRUD operations supported to SKUitem, Cart, Promotions and Store methods.
+
 ## Notes, considerations
 
 1. The core functionality is implemented in the `PromotionEngine` project, the `PromotionEngineWebApp` project is added only for easier testing and demo.
 2. The `PromotionEngine` is tested via code tests from `PromotionEngineTests` project, but the test coverage could be further improved.
-3. Currently the extension of the available `PromotionRule` types could be added only by adding further implementations. A future imrovement could be to use a Dependency Injection framework (e.g Autofac) that could pick up .dll files that contain an implementation of `PromotionRule` and inject the to the list of promotionrules.
+3. Currently the extension of the available `PromotionRule` types could be added only by adding further implementations. A future imrovement could be to use a Dependency Injection framework (e.g Autofac) that could pick up .dll files that contain an implementation of `PromotionRule` and inject the to the list of promotionrules. Different promotions for the existing `PromotionRule`s could be added with the current implementation. For example another promotion: "4 of C's for 70" or "A & B for 60".
 4. The `PromotionEngineWebApp` does not contain code test. For simplicity, the web method's response is `HTTP 400 BadRequest` in every case when an Exception occurs, otherwise `HTTP 200 Ok`. 
+5. The Swagger UI is exposed also when not in development mode and it does not contain any AUTH.
+6. Currently all the operations are done via the `IStore` dependency in the `PromotionEngineWebApp` and data is stored in memory only. The code could be restructured to store data in a SQL database (e.g. PostgreSQL) to persist data between restarts.
