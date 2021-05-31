@@ -3,6 +3,7 @@ using PromotionEngine.PromotionRules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace PromotionEngine.Store
 {
@@ -34,6 +35,24 @@ namespace PromotionEngine.Store
         {
             if ( promotion != null ) Promotions.Add(promotion);
             return this;
+        }
+        public Store AddPromotion(string promotion)
+        {
+            if (Regex.IsMatch(promotion, @"^\d"))
+            {
+                AddPromotion(promotion.ToNitemForFixedPricePromotion());
+            }
+            else
+            {
+                AddPromotion(promotion.ToCombinedItemFixedPricePromotion());
+            }
+            return this;
+        }
+        public void DeletePromotion(string promotion)
+        {
+            var promotionIndex = Promotions.FindIndex(p => promotion.Equals(p.ToString()));
+            if (promotionIndex == -1) throw new ArgumentException("Promotion not found!");
+            Promotions.RemoveAt(promotionIndex);
         }
 
         public Store AddItemToCart(string itemSKU)
@@ -80,7 +99,41 @@ namespace PromotionEngine.Store
             Items.RemoveAt(Items.FindIndex(i => sku.Equals(i.ID)));
         }
 
-        private bool IsValidSKU(string sku) {
+        public List<PromotionRule> GetPromotions()
+        {
+            return Promotions;
+        }
+
+        public List<SKUitem> GetAllItems()
+        {
+            return Items;
+        }
+
+        public SKUitem GetItem(string sku)
+        {
+            if (!IsValidSKU(sku)) throw new ArgumentException("SKU not found!");
+
+            return Items.First(i => sku.Equals(i.ID));
+        }
+
+        public void DeleteItemFromCart(string sku)
+        {
+            if (!IsValidSKU(sku)) throw new ArgumentException("SKU not found!");
+            Cart.RemoveItem(sku);
+        }
+
+        public float GetCartTotal()
+        {
+            return Cart.TotalPrice;
+        }
+
+        public Cart GetCart()
+        {
+            return Cart;
+        }
+
+        private bool IsValidSKU(string sku)
+        {
             return Items.Any(i => sku.Equals(i.ID));
         }
     }
