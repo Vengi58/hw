@@ -3,8 +3,6 @@ using PromotionEngine.PromotionRules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PromotionEngine.Store
 {
@@ -40,6 +38,8 @@ namespace PromotionEngine.Store
 
         public Store AddItemToCart(string itemSKU)
         {
+            if (!IsValidSKU(itemSKU)) throw new ArgumentException("SKU not found!");
+
             if ( !string.IsNullOrWhiteSpace(itemSKU) ) Cart.AddItem(Items.First(i => itemSKU.Equals(i.ID)));
             return this;
         }
@@ -62,7 +62,8 @@ namespace PromotionEngine.Store
         }
         public void UpdateSKUitemUnitPrice(string sku, float price)
         {
-            if (!Items.Any(i => sku.Equals(i.ID))) throw new ArgumentException("SKU not found!");
+            if (!IsValidSKU(sku)) throw new ArgumentException("SKU not found!");
+
             foreach (var item in Items)
             {
                 if(sku.Equals(item.ID))
@@ -74,7 +75,13 @@ namespace PromotionEngine.Store
 
         public void DeleteSKUitem(string sku)
         {
+            if (!IsValidSKU(sku)) throw new ArgumentException("SKU not found!");
+
             Items.RemoveAt(Items.FindIndex(i => sku.Equals(i.ID)));
+        }
+
+        private bool IsValidSKU(string sku) {
+            return Items.Any(i => sku.Equals(i.ID));
         }
     }
 }
