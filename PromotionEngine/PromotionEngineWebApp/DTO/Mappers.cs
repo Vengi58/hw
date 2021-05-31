@@ -1,8 +1,5 @@
 ﻿using PromotionEngine.Items;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PromotionEngineWebApp.DTO
 {
@@ -16,6 +13,16 @@ namespace PromotionEngineWebApp.DTO
         public static SKUitem ToDAO(this SKUitemDTO sKUitemDTO)
         {
             return new SKUitem(sKUitemDTO.ID,sKUitemDTO.UnitPrice);
+        }
+
+        public static CartDTO ToDTO(this Cart cart)
+        {
+            return new CartDTO { Items = cart.Items.Select(i => i.ToDTO()).ToList(), TotalPrice = cart.TotalPrice };
+
+        }
+        public static CartItemDTO ToDTO(this CartItem cartItem)
+        {
+            return new CartItemDTO { Item = cartItem.Item.ToDTO(), FinalPrice = cartItem.FinalPrice, PromotionApplied = cartItem.PromotionApplied };
         }
     }
 }
