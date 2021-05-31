@@ -42,7 +42,10 @@ namespace PromotionEngineWebApp.Controllers
         {
             try
             {
-                return Ok(Store.GetSKUitems().FirstOrDefault(i => id.Equals(i.ID)).ToDTO());
+                var skuItem = Store.GetSKUitems().FirstOrDefault(i => id.Equals(i.ID));
+                return skuItem != null ?
+                    Ok(skuItem.ToDTO()) :
+                    BadRequest("SKU not found!");
             }
             catch (Exception e)
             {
