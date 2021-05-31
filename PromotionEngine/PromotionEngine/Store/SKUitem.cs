@@ -5,7 +5,7 @@ namespace PromotionEngine.Items
     public class SKUitem
     {
         public string ID { get; }
-        public float UnitPrice { get; }
+        public float UnitPrice { get; private set; }
 
         public SKUitem(string id, float unitPrice)
         {
@@ -14,6 +14,11 @@ namespace PromotionEngine.Items
 
             ID = id;
             UnitPrice = unitPrice;
+        }
+
+        public void UpdateUnitPrice(float price)
+        {
+            UnitPrice = price;
         }
     }
 }

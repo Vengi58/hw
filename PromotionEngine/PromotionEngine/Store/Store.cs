@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PromotionEngine.Store
 {
-    public class Store
+    public class Store : IStore
     {
         public Cart Cart { get; private set; }
         public List<PromotionRule> Promotions { get; }
@@ -54,6 +54,26 @@ namespace PromotionEngine.Store
         {
             Promotions.ForEach(p => { if (p.IsApplicable(Cart)) p.Execute(Cart); });
             return this;
+        }
+
+        public List<SKUitem> GetSKUitems()
+        {
+            return Items;
+        }
+        public void UpdateSKUitemUnitPrice(string sku, float price)
+        {
+            foreach (var item in Items)
+            {
+                if(sku.Equals(item.ID))
+                {
+                    item.UpdateUnitPrice(price);
+                }
+            }
+        }
+
+        public void DeleteSKUitem(string sku)
+        {
+            Items.RemoveAt(Items.FindIndex(i => sku.Equals(i.ID)));
         }
     }
 }
