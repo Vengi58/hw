@@ -62,6 +62,7 @@ namespace PromotionEngine.Store
         }
         public void UpdateSKUitemUnitPrice(string sku, float price)
         {
+            if (!Items.Any(i => sku.Equals(i.ID))) throw new ArgumentException("SKU not found!");
             foreach (var item in Items)
             {
                 if(sku.Equals(item.ID))
