@@ -63,7 +63,9 @@ This .net core library contains the business logic, separated into 3 main parts:
 
 #### PromotionRules
 
-Supports to implement multiple different PromotionRules. Currently only 2 types are implemented:
+Applying the **Rule Engine Design Pattern**, the solution supports to implement multiple different PromotionRules which could be added to the rule set and all implement the `IsApplicable` and the `Execute` functions, for the `Cart` as the context to pass data across the rules.
+
+Currently only 2 types are implemented:
  - `CombinedItemFixedPricePromotion`
  - `NitemForFixedPricePromotion`
 
@@ -120,4 +122,7 @@ Further CRUD operations supported to SKUitem, Cart, Promotions and Store methods
 3. Currently the extension of the available `PromotionRule` types could be added only by adding further implementations. A future imrovement could be to use a Dependency Injection framework (e.g Autofac) that could pick up .dll files that contain an implementation of `PromotionRule` and inject the to the list of promotionrules. Different promotions for the existing `PromotionRule`s could be added with the current implementation. For example another promotion: "4 of C's for 70" or "A & B for 60".
 4. The `PromotionEngineWebApp` does not contain code test. For simplicity, the web method's response is `HTTP 400 BadRequest` in every case when an Exception occurs, otherwise `HTTP 200 Ok`. 
 5. The Swagger UI is exposed also when not in development mode and it does not contain any AUTH.
-6. Currently all the operations are done via the `IStore` dependency in the `PromotionEngineWebApp` and data is stored in memory only. The code could be restructured to store data in a SQL database (e.g. PostgreSQL) to persist data between restarts.
+6. Currently all the operations are done via the `IStore` dependency in the `PromotionEngineWebApp` and data is stored in memory only. The code could be restructured to store data in a SQL database (e.g. PostgreSQL) to persist data between restarts. For data persistance the EntityFramework could be used.
+7. The code does not contain any logging, but NLog could be used for detailed logging.
+8. The `PromotionEngine` library is referenced in the`PromotionEngineWebApp` within the VS Solution. Later it could be published as a separate Nuget package and installed through Nuget.
+9. Exception handling, input validation and error handling could be further improved accross the code.
